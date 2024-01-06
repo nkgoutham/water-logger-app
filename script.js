@@ -1,36 +1,47 @@
-// script.js
-document.addEventListener('DOMContentLoaded', function () {
-    // Initialize counters for 4 users in the shared scope
-    let counters = [0, 0, 0, 0];
+// Global scope counters array
+var counters = [0, 0, 0, 0];
 
-    const usersDiv = document.getElementById('users');
-    const resetButton = document.getElementById('resetButton');
+// Function to increment counter, defined in the global scope
+function increment(userIndex) {
+    counters[userIndex]++;
+    updateDisplay();
+}
+
+// Function to update the display, defined in the global scope
+function updateDisplay() {
+    counters.forEach((count, index) => {
+        var userSpan = document.getElementById('user' + index);
+        if (userSpan) {
+            userSpan.textContent = count;
+        }
+    });
+}
+
+// This code will run once the DOM is fully loaded
+document.addEventListener('DOMContentLoaded', function () {
+    var usersDiv = document.getElementById('users');
+    var resetButton = document.getElementById('resetButton');
 
     // User names array
-    const userNames = ['Pum', 'Pippi', 'Kusuma', 'Gopi'];
-
-    // Function to increment counter
-    function increment(userIndex) {
-        counters[userIndex]++;
-        updateDisplay();
-    }
-
-    // Make increment function globally accessible
-    window.increment = increment;
-
-    // Update the display
-    function updateDisplay() {
-        counters.forEach((count, index) => {
-            document.querySelector(`#user${index} span`).textContent = count;
-        });
-    }
+    var userNames = ['Pum', 'Pippi', 'Kusuma', 'Gopi'];
 
     // Create user elements
-    userNames.forEach((name, index) => {
-        let userDiv = document.createElement('div');
-        userDiv.id = `user${index}`;
-        userDiv.innerHTML = `${name}: <span>${counters[index]}</span> 
-                             <button onclick="increment(${index})">+1</button>`;
+    userNames.forEach(function(name, index) {
+        var userDiv = document.createElement('div');
+        var userSpan = document.createElement('span');
+        userSpan.id = 'user' + index;
+        userSpan.textContent = counters[index];
+
+        var incrementButton = document.createElement('button');
+        incrementButton.textContent = '+1';
+        // Using addEventListener instead of inline onclick
+        incrementButton.addEventListener('click', function() {
+            increment(index);
+        });
+
+        userDiv.appendChild(document.createTextNode(name + ": "));
+        userDiv.appendChild(userSpan);
+        userDiv.appendChild(incrementButton);
         usersDiv.appendChild(userDiv);
     });
 
@@ -40,8 +51,3 @@ document.addEventListener('DOMContentLoaded', function () {
         updateDisplay();
     });
 });
-
-// Expose the increment function to the global scope
-function increment(userIndex) {
-    // This empty function will be replaced when the DOM is fully loaded
-}
