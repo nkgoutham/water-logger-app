@@ -1,53 +1,47 @@
-// Global scope counters array
+// Define the counters array in the global scope
 var counters = [0, 0, 0, 0];
 
-// Function to increment counter, defined in the global scope
-function increment(userIndex) {
-    counters[userIndex]++;
+// Define the increment function in the global scope
+function increment(index) {
+    counters[index]++;
     updateDisplay();
 }
 
-// Function to update the display, defined in the global scope
+// Define the updateDisplay function in the global scope
 function updateDisplay() {
-    counters.forEach((count, index) => {
-        var userSpan = document.getElementById('user' + index);
-        if (userSpan) {
-            userSpan.textContent = count;
-        }
-    });
+    for (var i = 0; i < counters.length; i++) {
+        document.getElementById('counter' + i).textContent = counters[i];
+    }
 }
 
-// This code will run once the DOM is fully loaded
-document.addEventListener('DOMContentLoaded', function () {
-    var usersDiv = document.getElementById('users');
-    var resetButton = document.getElementById('resetButton');
-
-    // User names array
+// This function initializes the app and sets up the event listeners
+function initializeApp() {
     var userNames = ['Pum', 'Pippi', 'Kusuma', 'Gopi'];
+    var usersDiv = document.getElementById('users');
+    usersDiv.innerHTML = ''; // Clear existing content
 
-    // Create user elements
+    // Create divs for each user counter
     userNames.forEach(function(name, index) {
         var userDiv = document.createElement('div');
-        var userSpan = document.createElement('span');
-        userSpan.id = 'user' + index;
-        userSpan.textContent = counters[index];
-
+        userDiv.innerHTML = name + ': <span id="counter' + index + '">0</span> ';
+        
         var incrementButton = document.createElement('button');
         incrementButton.textContent = '+1';
-        // Using addEventListener instead of inline onclick
         incrementButton.addEventListener('click', function() {
             increment(index);
         });
-
-        userDiv.appendChild(document.createTextNode(name + ": "));
-        userDiv.appendChild(userSpan);
+        
         userDiv.appendChild(incrementButton);
         usersDiv.appendChild(userDiv);
     });
 
-    // Reset button functionality
-    resetButton.addEventListener('click', function () {
-        counters.fill(0); // Reset all counters to 0
+    // Set up the reset button
+    var resetButton = document.getElementById('resetButton');
+    resetButton.addEventListener('click', function() {
+        counters.fill(0);
         updateDisplay();
     });
-});
+}
+
+// Call the initializeApp function when the DOM is fully loaded
+document.addEventListener('DOMContentLoaded', initializeApp);
