@@ -20,6 +20,22 @@ function initializeApp() {
     var usersDiv = document.getElementById('users');
     usersDiv.innerHTML = ''; // Clear existing content
 
+// This function initializes the app and sets up the event listeners
+function initializeApp() {
+    // ... existing code for setting up users and reset button
+
+    // Display the current date
+    displayCurrentDate();
+}
+
+// Function to display the current date
+function displayCurrentDate() {
+    var currentDateDiv = document.getElementById('currentDate');
+    var now = new Date();
+    var options = { year: 'numeric', month: 'long', day: 'numeric' };
+    currentDateDiv.textContent = now.toLocaleDateString('en-US', options);
+}
+   
     // Create divs for each user counter
     userNames.forEach(function(name, index) {
         var userDiv = document.createElement('div');
