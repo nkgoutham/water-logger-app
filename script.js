@@ -14,20 +14,6 @@ function updateDisplay() {
     }
 }
 
-// This function initializes the app and sets up the event listeners
-function initializeApp() {
-    var userNames = ['Pum', 'Pippi', 'Kusuma', 'Gopi'];
-    var usersDiv = document.getElementById('users');
-    usersDiv.innerHTML = ''; // Clear existing content
-
-// This function initializes the app and sets up the event listeners
-function initializeApp() {
-    // ... existing code for setting up users and reset button
-
-    // Display the current date
-    displayCurrentDate();
-}
-
 // Function to display the current date
 function displayCurrentDate() {
     var currentDateDiv = document.getElementById('currentDate');
@@ -35,18 +21,28 @@ function displayCurrentDate() {
     var options = { year: 'numeric', month: 'long', day: 'numeric' };
     currentDateDiv.textContent = now.toLocaleDateString('en-US', options);
 }
-   
+
+// This function initializes the app and sets up the event listeners
+function initializeApp() {
+    var userNames = ['Pum', 'Pippi', 'Kusuma', 'Gopi'];
+    var usersDiv = document.getElementById('users');
+    usersDiv.innerHTML = ''; // Clear existing content
+
     // Create divs for each user counter
     userNames.forEach(function(name, index) {
         var userDiv = document.createElement('div');
-        userDiv.innerHTML = name + ': <span id="counter' + index + '">0</span> ';
-        
+        var userSpan = document.createElement('span');
+        userSpan.id = 'counter' + index;
+        userSpan.textContent = counters[index];
+
         var incrementButton = document.createElement('button');
         incrementButton.textContent = '+1';
         incrementButton.addEventListener('click', function() {
             increment(index);
         });
         
+        userDiv.appendChild(document.createTextNode(name + ": "));
+        userDiv.appendChild(userSpan);
         userDiv.appendChild(incrementButton);
         usersDiv.appendChild(userDiv);
     });
@@ -57,6 +53,9 @@ function displayCurrentDate() {
         counters.fill(0);
         updateDisplay();
     });
+
+    // Display the current date
+    displayCurrentDate();
 }
 
 // Call the initializeApp function when the DOM is fully loaded
